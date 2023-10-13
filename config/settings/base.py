@@ -27,6 +27,7 @@ DJANGO_DEFAULT_APPS = [
 ]
 DJANGO_PROJECT_APPS = [
     "core.authentication",
+    "core.ledger",
 ]
 PACKAGE_APPS = [
     "django_extensions",

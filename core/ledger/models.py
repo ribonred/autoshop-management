@@ -1,0 +1,78 @@
+from django.db import models
+from helper.models import BaseTimeStampModel
+
+
+class Accounts(BaseTimeStampModel):
+    class AccountType(models.TextChoices):
+        ASSET = "ASSET", "Asset"
+        LIABILITY = "LIABILITY", "Liability"
+        EQUITY = "EQUITY", "Equity"
+        INCOME = "INCOME", "Income"
+        EXPENSE = "EXPENSE", "Expense"
+
+    user = models.ForeignKey("authentication.User", on_delete=models.CASCADE)
+    account_name = models.CharField(max_length=255, verbose_name="Account Name")
+    account_number = models.CharField(
+        max_length=255, blank=True, null=True, verbose_name="Account Number"
+    )
+    account_type = models.CharField(
+        max_length=255,
+        verbose_name="Account Type",
+        choices=AccountType.choices,
+        default=AccountType.ASSET,
+    )
+    transactions: models.QuerySet["Transaction"]
+
+    def __str__(self):
+        return self.account_name
+
+
+class Instrument(BaseTimeStampModel):
+    name = models.CharField(max_length=255, verbose_name="Instrument Name", unique=True)
+    is_active = models.BooleanField(default=True, verbose_name="Is Active")
+    trxs: models.QuerySet["Transaction"]
+
+    def __str__(self):
+        return self.name
+
+
+class TrxCategory(BaseTimeStampModel):
+    name = models.CharField(max_length=255, verbose_name="Category Name", unique=True)
+    is_active = models.BooleanField(default=True, verbose_name="Is Active")
+    trx_categories: models.QuerySet["Transaction"]
+
+    def __str__(self):
+        return self.name
+
+
+class Transaction(BaseTimeStampModel):
+    class TransactionType(models.TextChoices):
+        DEBIT = "DEBIT", "Debit"
+        CREDIT = "CREDIT", "Credit"
+
+    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Amount")
+    description = models.TextField(verbose_name="Description", default="no description")
+    account = models.ForeignKey(
+        Accounts,
+        on_delete=models.CASCADE,
+        verbose_name="Account",
+        related_name="transactions",
+    )
+    trx_category = models.ManyToManyField(
+        TrxCategory,
+        verbose_name="Transaction Category",
+        blank=True,
+        related_name="trx_categories",
+    )
+    trx_type = models.CharField(max_length=255, choices=TransactionType.choices)
+    instrument = models.ForeignKey(
+        Instrument,
+        on_delete=models.CASCADE,
+        verbose_name="Instrument",
+        null=True,
+        blank=True,
+        related_name="trxs",
+    )
+
+    def __str__(self):
+        return self.description

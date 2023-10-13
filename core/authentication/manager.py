@@ -40,4 +40,4 @@ class UserManager(BaseUserManager):
         return self.create_user(email, username, password, **extra_fields)
 
     def get_superuser(self):
-        return self.get(is_superuser=True)
+        return self.filter(is_superuser=True)
