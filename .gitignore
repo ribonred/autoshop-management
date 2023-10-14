@@ -5,6 +5,7 @@ __pycache__/
 poetry.lock
 # C extensions
 *.so
+.doit*
 node_modules/
 # Distribution / packaging
 .Python

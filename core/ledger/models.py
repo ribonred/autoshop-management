@@ -79,11 +79,13 @@ class Transaction(BaseTimeStampModel):
         verbose_name="Account",
         related_name="transactions",
     )
-    trx_category = models.ManyToManyField(
+    trx_category = models.ForeignKey(
         TrxCategory,
         verbose_name="Transaction Category",
         blank=True,
+        null=True,
         related_name="trx_categories",
+        on_delete=models.CASCADE,
     )
     trx_type = models.CharField(max_length=255, choices=TransactionType.choices)
     entity = models.ForeignKey(

@@ -28,7 +28,7 @@
                 </tr>
             </thead>
             <tbody>
-                {% for data in transactions  %}
+                {% for data in today_trx  %}
                 <tr class="border-b border-gray-200 ">
                     <th scope="row" class="px-6 py-4 
                         font-medium
@@ -42,10 +42,14 @@
                         <div class="font-bold text-black">
                             {{data.entity.name|truncatechars:30}}
                         </div>
-                       
+                        <div class="font-light text-black">
+                            {{data.trx_category.name}}
+                        </div>
                     </td>
                     <td class="px-6 py-4 bg-gray-50 ">
-                        Laptop
+                        <a class="text-purple-600" href="#">
+                            View transactions
+                        </a>
                     </td>
    
                 </tr>
@@ -57,7 +61,52 @@
         <div class="bg-gray-200 font-bold mb-5">
             <h2 class="ml-5">Yesterday</h2>
         </div>
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400">
+            <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3 bg-gray-50  hidden">
+                       amount
+                    </th>
+                    <th scope="col" class="px-6 py-3 hidden">
+                        description
+                    </th>
+                    <th scope="col" class="px-6 py-3 bg-gray-50  hidden">
+                        detail
+                    </th>
 
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in today_trx  %}
+                <tr class="border-b border-gray-200 ">
+                    <th scope="row" class="px-6 py-4 
+                        font-medium
+                        whitespace-nowrap
+                      bg-gray-50"
+                      style="color: {{data.trx_type|trx_type_color}};"
+                      >
+                        {{data.amount|currency}}
+                    </th>
+                    <td class="px-6 py-4">
+                        <div class="font-bold text-black">
+                            {{data.entity.name|truncatechars:30}}
+                        </div>
+                        <div class="font-light text-black">
+                            {{data.trx_category.name}}
+                        </div>
+                    </td>
+                    <td class="px-6 py-4 bg-gray-50 ">
+                        <a class="text-purple-600" href="#">
+                            View transactions
+                        </a>
+                    </td>
+   
+                </tr>
+                {% endfor %}
+                
+
+            </tbody>
+        </table>
     </div>
 
 

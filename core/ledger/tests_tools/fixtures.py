@@ -15,7 +15,7 @@ class AccountsFactory(factory.django.DjangoModelFactory):
         model = ledger_models.Accounts
 
     account_name = factory.LazyAttribute(lambda _: faker.name())
-    account_type = fuzzy.FuzzyChoice(ledger_models.Accounts.AccountType.choices)
+    account_type = fuzzy.FuzzyChoice(ledger_models.Accounts.AccountType)
     user = factory.SubFactory("core.authentication.tests_tools.fixtures.UserFactory")
 
 
@@ -43,7 +43,7 @@ class TrxCategoryFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = ledger_models.TrxCategory
 
-    name = fuzzy.FuzzyChoice(["SELL", "BUY", "REPAIR", "MAINTENANCE", "FUEL", "OTHER"])
+    name = factory.Iterator(["SELL", "BUY", "REPAIR", "MAINTENANCE", "FUEL", "OTHER"])
     is_active = True
 
 
@@ -52,17 +52,12 @@ class TransactionFactory(factory.django.DjangoModelFactory):
     class Meta:
         model = ledger_models.Transaction
 
-    amount = fuzzy.FuzzyDecimal(0.01, 1000.00)
+    amount = fuzzy.FuzzyDecimal(2_000_000, 50_000_000, 2)
     description = factory.LazyAttribute(lambda _: faker.text())
     account = factory.SubFactory(AccountsFactory)
     trx_type = fuzzy.FuzzyChoice(ledger_models.Transaction.TransactionType)
+    trx_category = factory.SubFactory(TrxCategoryFactory)
     entity = factory.SubFactory(EntityFactory)
-
-    @factory.post_generation
-    def trx_category(self, create, extracted, **kwargs):
-        if not create or not extracted:
-            # Simple build, or nothing to add, do nothing.
-            return
-
-        # Add the iterable of groups using bulk addition
-        self.trx_category.add(*extracted)
+    trx_date = factory.LazyAttribute(
+        lambda _: faker.date_between(start_date="-2d", end_date="today")
+    )
