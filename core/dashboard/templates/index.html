@@ -1,45 +1,62 @@
 {% extends 'dashboard_base.html' %}
+{% block extrahead %}
+<link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+{% endblock extrahead %}
 {% block title %}
-    home
-{% endblock title %}
+  home
+{% endblock %}
 {% block base %}
-    <h2>Today's Activities</h2>
-    <table class="table-auto">
-        <thead>
-            <tr>
-                <th class="px-4 py-2">Transaction</th>
-                <th class="px-4 py-2">Notes</th>
-                <th class="px-4 py-2">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for activity in todays_activities %}
-            <tr>
-                <td class="border px-4 py-2">{{ activity.transaction }}</td>
-                <td class="border px-4 py-2">{{ activity.notes }}</td>
-                <td class="border px-4 py-2"><a href="{% url 'view_transaction' activity.id %}">View Transaction</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
+<div class="p-4 sm:ml-64  mt-14 ">
+    <div class="bg-gray-200 font-bold mb-5">
+        <h2 class="ml-5">Today</h2>
+    </div>
+    <div class="relative overflow-x-auto shadow-md sm:rounded-lg">
+        <table class="w-full text-sm text-left text-gray-500 dark:text-gray-400 mb-5">
+            <thead class="text-xs text-gray-700 uppercase dark:text-gray-400">
+                <tr>
+                    <th scope="col" class="px-6 py-3 bg-gray-50  hidden">
+                       amount
+                    </th>
+                    <th scope="col" class="px-6 py-3 hidden">
+                        description
+                    </th>
+                    <th scope="col" class="px-6 py-3 bg-gray-50  hidden">
+                        detail
+                    </th>
 
-    <h2>Yesterday's Activities</h2>
-    <table class="table-auto">
-        <thead>
-            <tr>
-                <th class="px-4 py-2">Transaction</th>
-                <th class="px-4 py-2">Notes</th>
-                <th class="px-4 py-2">Action</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% for activity in yesterdays_activities %}
-            <tr>
-                <td class="border px-4 py-2">{{ activity.transaction }}</td>
-                <td class="border px-4 py-2">{{ activity.notes }}</td>
-                <td class="border px-4 py-2"><a href="{% url 'view_transaction' activity.id %}">View Transaction</a></td>
-            </tr>
-            {% endfor %}
-        </tbody>
-    </table>
-{% endblock base %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for data in transactions  %}
+                <tr class="border-b border-gray-200 ">
+                    <th scope="row" class="px-6 py-4 
+                        font-medium
+                      text-emerald-500 
+                        whitespace-nowrap
+                      bg-gray-50">
+                        $ {{data.amount|currency}}
+                    </th>
+                    <td class="px-6 py-4">
+                        Silver
+                    </td>
+                    <td class="px-6 py-4 bg-gray-50 ">
+                        Laptop
+                    </td>
+   
+                </tr>
+                {% endfor %}
+                
+
+            </tbody>
+        </table>
+        <div class="bg-gray-200 font-bold mb-5">
+            <h2 class="ml-5">Yesterday</h2>
+        </div>
+
+    </div>
+
+
+</div>
+{% endblock %}
+
+
