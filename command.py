@@ -18,8 +18,9 @@ def task_tailwind():
 
 
 def task_flushdb():
+    command = "python manage.py flush --no-input"
     return {
-        "actions": [lambda: call_command('flush', '--no-input')],
+        "actions": [CmdAction(command)],
         "verbosity": 2,
     }
 
