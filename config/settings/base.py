@@ -25,14 +25,12 @@ DJANGO_DEFAULT_APPS = [
     "django.contrib.messages",
     "django.contrib.staticfiles",
 ]
-DJANGO_PROJECT_APPS = [
-    "core.authentication",
-    "core.ledger",
-]
+DJANGO_PROJECT_APPS = ["core.authentication", "core.ledger", "core.dashboard"]
 PACKAGE_APPS = [
     "django_extensions",
     "simple_history",
-    "debug_toolbar",
+    # "debug_toolbar",
+    "compressor"
 ]
 INSTALLED_APPS = DJANGO_DEFAULT_APPS + PACKAGE_APPS + DJANGO_PROJECT_APPS
 
@@ -119,7 +117,7 @@ MIDDLEWARE = [
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     "simple_history.middleware.HistoryRequestMiddleware",
     "middlewares.request_id.LoggerMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
+    # "debug_toolbar.middleware.DebugToolbarMiddleware",
 ]
 
 
@@ -176,7 +174,9 @@ STATICFILES_DIRS = [
 STATIC_ROOT = BASE_DIR.parent / "assets/staticfiles"
 MEDIA_ROOT = BASE_DIR.parent / "assets/media"  # 'data' is my media folder
 MEDIA_URL = "/media/"
-
+COMPRESS_ROOT = BASE_DIR.parent / "assets/static"
+COMPRESS_ENABLED = True
+STATICFILES_FINDERS = ('compressor.finders.CompressorFinder',)
 AUTHENTICATION_BACKENDS = ["config.auth.EmailUsername"]
 
 # ADMIN

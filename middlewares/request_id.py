@@ -19,7 +19,7 @@ class LoggerMiddleware(RequestMiddleware):
         if getattr(response, "streaming", False):
             response_body = "** Streaming **"
         else:
-            if type(response.content) == bytes:
+            if isinstance(response.content, bytes):
                 response_body = json.loads(response.content.decode())
             else:
                 response_body = json.loads(response.content)
@@ -52,8 +52,8 @@ class LoggerMiddleware(RequestMiddleware):
         self._raised_exception = False
         request.id = request_id
 
-    def __call__(self, request):
-        response = super().__call__(request)
+    async def __call__(self, request):
+        response = await super().__call__(request)
         response["x-request-id"] = request.id
         response["x-correlation-id"] = request.id
         if response.get("content-type") in (
