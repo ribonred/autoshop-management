@@ -37,6 +37,26 @@ class Instrument(BaseTimeStampModel):
         return self.name
 
 
+class Entity(BaseTimeStampModel):
+    instrument = models.ForeignKey(
+        Instrument,
+        on_delete=models.CASCADE,
+        verbose_name="Instrument",
+        null=True,
+        blank=True,
+        related_name="entities",
+    )
+    code = models.CharField(max_length=255, verbose_name="Entity Code", unique=True)
+    name = models.CharField(max_length=255, verbose_name="Entity Name")
+    properties = models.JSONField(
+        verbose_name="Entity Properties", blank=True, null=True, default=dict
+    )
+    trxs: models.QuerySet["Transaction"]
+
+    def __str__(self):
+        return f"{self.name} - {self.code}"
+
+
 class TrxCategory(BaseTimeStampModel):
     name = models.CharField(max_length=255, verbose_name="Category Name", unique=True)
     is_active = models.BooleanField(default=True, verbose_name="Is Active")
@@ -66,17 +86,15 @@ class Transaction(BaseTimeStampModel):
         related_name="trx_categories",
     )
     trx_type = models.CharField(max_length=255, choices=TransactionType.choices)
-    instrument = models.ForeignKey(
-        Instrument,
+    entity = models.ForeignKey(
+        Entity,
         on_delete=models.CASCADE,
-        verbose_name="Instrument",
+        verbose_name="entity",
         null=True,
         blank=True,
         related_name="trxs",
     )
-    trx_date = models.DateField(
-        verbose_name="Transaction Date", default=timezone.now
-    )
+    trx_date = models.DateField(verbose_name="Transaction Date", default=timezone.now)
 
     def __str__(self):
         return self.description

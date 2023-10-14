@@ -46,12 +46,12 @@ class TestLedgerModels:
             description=transaction.description,
             account=transaction.account,
             trx_type=transaction.trx_type,
-            instrument=transaction.instrument,
+            entity=transaction.entity,
             trx_category=transaction.trx_category,
         )
         assert transaction.amount
         assert transaction.description
         assert transaction.account
         assert transaction.trx_type
-        assert transaction.instrument
+        assert transaction.entity
         assert transaction.trx_category

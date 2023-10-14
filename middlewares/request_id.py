@@ -52,8 +52,8 @@ class LoggerMiddleware(RequestMiddleware):
         self._raised_exception = False
         request.id = request_id
 
-    async def __call__(self, request):
-        response = await super().__call__(request)
+    def __call__(self, request):
+        response = super().__call__(request)
         response["x-request-id"] = request.id
         response["x-correlation-id"] = request.id
         if response.get("content-type") in (

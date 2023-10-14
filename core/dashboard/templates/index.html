@@ -32,13 +32,17 @@
                 <tr class="border-b border-gray-200 ">
                     <th scope="row" class="px-6 py-4 
                         font-medium
-                      text-emerald-500 
                         whitespace-nowrap
-                      bg-gray-50">
-                        $ {{data.amount|currency}}
+                      bg-gray-50"
+                      style="color: {{data.trx_type|trx_type_color}};"
+                      >
+                        {{data.amount|currency}}
                     </th>
                     <td class="px-6 py-4">
-                        Silver
+                        <div class="font-bold text-black">
+                            {{data.entity.name|truncatechars:30}}
+                        </div>
+                       
                     </td>
                     <td class="px-6 py-4 bg-gray-50 ">
                         Laptop
