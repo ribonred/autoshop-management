@@ -1,5 +1,6 @@
 from django.db import models
 from helper.models import BaseTimeStampModel
+from django.utils import timezone
 
 
 class Accounts(BaseTimeStampModel):
@@ -72,6 +73,9 @@ class Transaction(BaseTimeStampModel):
         null=True,
         blank=True,
         related_name="trxs",
+    )
+    trx_date = models.DateField(
+        verbose_name="Transaction Date", default=timezone.now
     )
 
     def __str__(self):
