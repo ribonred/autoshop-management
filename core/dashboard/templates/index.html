@@ -3,4 +3,43 @@
     home
 {% endblock title %}
 {% block base %}
+    <h2>Today's Activities</h2>
+    <table class="table-auto">
+        <thead>
+            <tr>
+                <th class="px-4 py-2">Transaction</th>
+                <th class="px-4 py-2">Notes</th>
+                <th class="px-4 py-2">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for activity in todays_activities %}
+            <tr>
+                <td class="border px-4 py-2">{{ activity.transaction }}</td>
+                <td class="border px-4 py-2">{{ activity.notes }}</td>
+                <td class="border px-4 py-2"><a href="{% url 'view_transaction' activity.id %}">View Transaction</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <h2>Yesterday's Activities</h2>
+    <table class="table-auto">
+        <thead>
+            <tr>
+                <th class="px-4 py-2">Transaction</th>
+                <th class="px-4 py-2">Notes</th>
+                <th class="px-4 py-2">Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for activity in yesterdays_activities %}
+            <tr>
+                <td class="border px-4 py-2">{{ activity.transaction }}</td>
+                <td class="border px-4 py-2">{{ activity.notes }}</td>
+                <td class="border px-4 py-2"><a href="{% url 'view_transaction' activity.id %}">View Transaction</a></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
 {% endblock base %}
