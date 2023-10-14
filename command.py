@@ -1,4 +1,5 @@
 from doit.action import CmdAction
+from django.core.management import call_command
 
 
 def task_server():
@@ -16,8 +17,15 @@ def task_tailwind():
     }
 
 
+def task_flushdb():
+    return {
+        "actions": [lambda: call_command('flush', '--no-input')],
+        "verbosity": 2,
+    }
+
+
 def task_runwatch():
     return {
         "actions": None,
-        "task_dep": ["server", "tailwind"],
+        "task_dep": ["server", "tailwind", "flushdb"],
     }
