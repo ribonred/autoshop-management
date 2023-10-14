@@ -3,7 +3,8 @@ import locale
 
 register = template.Library()
 
-@register.filter(name='currency')
+
+@register.filter(name="currency")
 def currency(value):
-    locale.setlocale(locale.LC_ALL, 'id_ID.UTF-8')
+    locale.setlocale(locale.LC_ALL, "id_ID.UTF-8")
     return locale.currency(value, grouping=True)
