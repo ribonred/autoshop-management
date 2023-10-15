@@ -1,5 +1,12 @@
 from django.contrib import admin
-from .models import Accounts, Instrument, TrxCategory, Transaction
+from .models import Accounts, Instrument, TrxCategory, Transaction, Entity
+
+
+@admin.register(Entity)
+class EntityAdmin(admin.ModelAdmin):
+    list_display = ("name", "code")
+    list_filter = ("code",)
+    search_fields = ("name", "code")
 
 
 @admin.register(Accounts)

@@ -1,7 +1,9 @@
 from django.urls import path
-from .views.home.homeviews import HomeView
+from core.dashboard.views.home import homeviews as home
+from core.dashboard.views.instrument import views as instrument
 
 # define url patterns
 urlpatterns = [
-    path("", HomeView.as_view(), name="home"),
+    path("", home.HomeView.as_view(), name="home"),
+    path("instruments/", instrument.InstrumentView.as_view(), name="instruments"),
 ]

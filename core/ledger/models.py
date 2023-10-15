@@ -1,6 +1,7 @@
 from django.db import models
 from helper.models import BaseTimeStampModel
 from django.utils import timezone
+from core.ledger.manager import TransactionQueryManager
 
 
 class Accounts(BaseTimeStampModel):
@@ -71,7 +72,7 @@ class Transaction(BaseTimeStampModel):
         DEBIT = "DEBIT", "Debit"
         CREDIT = "CREDIT", "Credit"
 
-    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Amount")
+    amount = models.DecimalField(max_digits=15, decimal_places=2, verbose_name="Amount")
     description = models.TextField(verbose_name="Description", default="no description")
     account = models.ForeignKey(
         Accounts,
@@ -97,6 +98,7 @@ class Transaction(BaseTimeStampModel):
         related_name="trxs",
     )
     trx_date = models.DateField(verbose_name="Transaction Date", default=timezone.now)
+    query_manager = TransactionQueryManager()
 
     def __str__(self):
         return self.description

@@ -133,6 +133,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "core.dashboard.context.logo.tailwind_logo",
+                "core.dashboard.context.urls.get_url_context",
             ],
         },
     },

@@ -1,6 +1,6 @@
 <ul class="space-y-2 font-medium">
     <li>
-     {% include "components/textlink/textmenu.html" with text="Home" icon=home_icon %}   
+     {% include "components/textlink/textmenu.html" with url=home_url text="Home" icon=home_icon %}   
     </li>
     <li>
       {% include "components/textlink/textmenu.html" with text="Data" icon=data_icon %}
@@ -9,7 +9,7 @@
       {% include "components/textlink/textmenu.html" with text="Forms" icon=input_icon %}
     </li>
     <li>
-      {% include "components/textlink/textmenu.html" with text="Instrument" icon=instrument_icon %}
+      {% include "components/textlink/textmenu.html" with url=instruments_url text="Instrument" icon=instrument_icon %}
     </li>
     <li>
       {% include "components/textlink/textmenu.html" with text="Entity" icon=entity_icon %}
