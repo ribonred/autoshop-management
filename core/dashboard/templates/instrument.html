@@ -37,3 +37,24 @@
   <div id="instrument-menu"></div>
 </div>
 {% endblock base %}
+<script>
+    document.addEventListener('DOMContentLoaded', (event) => {
+        // Get the grid element
+        const grid = document.getElementById('instrument-menu');
+
+        // Get the number of items
+        const numItems = grid.children.length;
+
+        // Remove all grid classes
+        grid.classList.remove('grid-cols-1', 'grid-cols-2', 'grid-cols-4');
+
+        // Add the appropriate class based on the number of items
+        if (numItems <= 2) {
+            grid.classList.add('grid-cols-2');
+        } else if (numItems <= 8) {
+            grid.classList.add('grid-cols-4');
+        } else {
+            grid.classList.add('grid-cols-8');
+        }
+    });
+</script>
