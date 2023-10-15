@@ -28,5 +28,5 @@ def task_flushdb():
 def task_runwatch():
     return {
         "actions": None,
-        "task_dep": ["server", "tailwind", "flushdb"],
+        "task_dep": ["server", "tailwind"],
     }
