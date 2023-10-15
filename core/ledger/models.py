@@ -32,7 +32,7 @@ class Accounts(BaseTimeStampModel):
 class Instrument(BaseTimeStampModel):
     name = models.CharField(max_length=255, verbose_name="Instrument Name", unique=True)
     is_active = models.BooleanField(default=True, verbose_name="Is Active")
-    trxs: models.QuerySet["Transaction"]
+    entities: models.QuerySet["Entity"]
 
     def __str__(self):
         return self.name
@@ -99,6 +99,7 @@ class Transaction(BaseTimeStampModel):
     )
     trx_date = models.DateField(verbose_name="Transaction Date", default=timezone.now)
     query_manager = TransactionQueryManager()
+    objects = models.Manager()
 
     def __str__(self):
         return self.description

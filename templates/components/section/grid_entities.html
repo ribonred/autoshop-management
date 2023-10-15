@@ -1,0 +1,6 @@
+<div class="grid sm:grid-cols-1 lg:grid-cols-4 lg:gap-4 sm:gap-2">
+    {% for instrument in entities  %}
+    {% include 'components/cards/ecard.html' with instrument=instrument %} 
+    {% endfor %}
+    
+  </div>

@@ -1,6 +1,6 @@
 {% extends 'dashboard_base.html' %}
 {% block title %}
-    Instrument
+    Entity
 {% endblock title %}
 {% block base %}
 <div class="container lg:pr-52 lg:pl-52"> 
@@ -14,7 +14,7 @@
         id="search-input"
         aria-label="Search"
         aria-describedby="button-addon2"
-        hx-get="{% url 'api-instruments' %}"
+        hx-get="{% url 'api-entities' %}"
         hx-target="#instrument-menu"
         hx-trigger="load delay:1s, keyup changed delay:500ms"
         />
