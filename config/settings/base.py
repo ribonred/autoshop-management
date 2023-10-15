@@ -31,6 +31,7 @@ PACKAGE_APPS = [
     "simple_history",
     "debug_toolbar",
     "compressor",
+    "rest_framework",
 ]
 INSTALLED_APPS = DJANGO_DEFAULT_APPS + PACKAGE_APPS + DJANGO_PROJECT_APPS
 

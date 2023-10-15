@@ -6,4 +6,5 @@ from core.dashboard.views.instrument import views as instrument
 urlpatterns = [
     path("", home.HomeView.as_view(), name="home"),
     path("instruments/", instrument.InstrumentView.as_view(), name="instruments"),
+    path("api/instruments/", instrument.InstrumentApiView.as_view(), name="api-instruments"),
 ]

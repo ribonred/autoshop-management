@@ -5,10 +5,3 @@
 .center-text {
     @apply flex items-center justify-center text-center;
 }
-
-.grid {
-    @apply grid grid-cols-1 gap-4;
-    @media (min-width: 640px) { @apply grid-cols-2; }
-    @media (min-width: 1024px) { @apply grid-cols-3; }
-    @media (min-width: 1280px) { @apply grid-cols-4; }
-}
