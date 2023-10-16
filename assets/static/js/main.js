@@ -10,11 +10,14 @@ window.onload = function () {
         // Add more tags as needed
     ];
 
-    $("#search-input").on('keyup', function(e) {
-        if (e.key === "@") {
-            console.log("autocomplete");
+    $("#search-input").on('keyup', function() {
+        if (this.value.includes("@")) {
             $(this).autocomplete({
                 source: availableTags
+            });
+        } else {
+            $(this).autocomplete({
+                source: []
             });
         }
     });
