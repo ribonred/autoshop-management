@@ -3,3 +3,4 @@ window.onload = function () {
         event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
     })
 }
+
