@@ -12,6 +12,7 @@ window.onload = function () {
 
     $("#search-input").on('keyup', function() {
         if (this.value.includes("@")) {
+            console.log("email");
             $(this).autocomplete({
                 source: availableTags
             });
