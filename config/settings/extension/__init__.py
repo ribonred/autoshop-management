@@ -4,9 +4,11 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class DbEngine(BaseSettings):
     """Manage Engine settings only"""
 
-    ENGINE: str = "django.db.backends.sqlite3"
+    DBENGINE: str = "django.db.backends.sqlite3"
     model_config: SettingsConfigDict = SettingsConfigDict(
-        env_file=".env", env_file_encoding="utf-8"
+        env_file=".env",
+        env_file_encoding="utf-8",
+        extra="ignore",
     )
 
 
@@ -28,6 +30,7 @@ class PostgresSettings(BaseSettings):
         env_file_encoding="utf-8",
         env_prefix="POSTGRES_",
         case_sensitive=True,
+        extra="ignore",
     )
 
 
@@ -39,7 +42,7 @@ class DatabaseSettings(BaseSettings):
     @classmethod
     def get_db_settings(cls):
         engine: DbEngine = DbEngine()
-        if "postgres" in engine.ENGINE:
+        if "postgres" in engine.DBENGINE:
             return cls(default=PostgresSettings())  # type: ignore
         return cls(default=SQLiteSettings())
 
@@ -56,7 +59,7 @@ class BaseEnv(BaseSettings):
     INTERNAL_IPS: tuple = ("127.0.0.1",)
     ROOT_URLCONF: str = "config.urls"
     model_config: SettingsConfigDict = SettingsConfigDict(
-        env_file=".env", env_file_encoding="utf-8"
+        env_file=".env", env_file_encoding="utf-8", extra="ignore"
     )
 
 
@@ -65,5 +68,4 @@ class EnvironSettings(BaseEnv):
 
 
 class LocalConfig(BaseSettings):
-    ADDITIONAL_APPS: list[str] = [
-    ]
+    ADDITIONAL_APPS: list[str] = []
