@@ -10,16 +10,15 @@ window.onload = function () {
         // Add more tags as needed
     ];
 
-    $("#search-input").on('keyup', function() {
-        if (this.value.includes("@")) {
-            console.log("email");
-            $(this).autocomplete({
-                source: availableTags
-            });
-        } else {
-            $(this).autocomplete({
-                source: []
-            });
+    $("#search-input").autocomplete({
+        source: function(request, response) {
+            if (request.term.startsWith("@")) {
+                var term = request.term.slice(1).toLowerCase();
+                var suggestions = availableTags.filter(tag => tag.toLowerCase().startsWith(term));
+                response(suggestions);
+            } else {
+                response([]);
+            }
         }
     });
 }
