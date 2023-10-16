@@ -10,8 +10,12 @@ window.onload = function () {
         // Add more tags as needed
     ];
 
-    $("#search-input").autocomplete({
-        source: availableTags
+    $("#search-input").on('keyup', function(e) {
+        if (e.key === "@") {
+            $(this).autocomplete({
+                source: availableTags
+            });
+        }
     });
 }
 
