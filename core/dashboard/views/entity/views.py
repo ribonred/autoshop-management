@@ -4,6 +4,7 @@ from rest_framework.renderers import TemplateHTMLRenderer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Count
+from core.dashboard.serializers.entity import EntitySerializer
 
 
 class EntityView(TemplateView):
@@ -27,3 +28,10 @@ class EntityApiView(APIView):
             {"entities": entities},
             template_name="components/section/grid_entities.html",
         )
+
+    def post(self, request, *args, **kwargs):
+        serializer = EntitySerializer(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(data=serializer.data, status=201)
+        return Response(data=serializer.errors, status=400)

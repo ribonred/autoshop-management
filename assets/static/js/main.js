@@ -22,4 +22,16 @@ window.onload = function () {
         }
     });
 }
+document.addEventListener("alpine:init", function () { 
+Alpine.data('modal', () => ({
+    instrumentModal: false,
+ 
+    instrumentModalToggle(e) {
+        console.log(e)
+        this.instrumentModal = ! this.instrumentModal
+
+    }
+}))
+})
+
 
