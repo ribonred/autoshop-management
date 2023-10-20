@@ -1,6 +1,6 @@
 from django.views.generic import TemplateView
 from core.ledger.models import Entity
-from rest_framework.renderers import TemplateHTMLRenderer
+from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Count
@@ -12,7 +12,8 @@ class EntityView(TemplateView):
 
 
 class EntityApiView(APIView):
-    renderer_classes = [TemplateHTMLRenderer]
+    renderer_classes = [JSONRenderer, TemplateHTMLRenderer]
+    template_name = "components/section/grid_entities.html"
 
     def get(self, request, *args, **kwargs):
         saerch = request.GET.get("search", None)
@@ -26,7 +27,6 @@ class EntityApiView(APIView):
             entities = entities.filter(name__icontains=saerch)
         return Response(
             {"entities": entities},
-            template_name="components/section/grid_entities.html",
         )
 
     def post(self, request, *args, **kwargs):

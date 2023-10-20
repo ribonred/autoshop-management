@@ -24,10 +24,112 @@ window.onload = function () {
 }
 // alpine js
 document.addEventListener("alpine:init", function () {
-    Alpine.data('modal', () => ({
+    Alpine.data('AlpineData', () => ({
+        entityFormLoading: false,
         instrumentModal: false,
         propertiesModal: false,
+        successToast: false,
+        errorToast: false,
+        propertiesData: {},
+        resetEntityData(){
+        this.entityData = {
+            code: '',
+            name: '',
+            instrument: '',
+            properties: {}
+        }
+        },
+        entityData: {
+            code: '',
+            name: '',
+            instrument: null,
+        },
+        formData: {
+            labelProp: '',
+            valueProp: ''
+        },
+        getPropContainer() {
+            return document.getElementById('entity-prop-container')
+        },
+        clearPropContainer() {
+            const entityPropContainer = this.getPropContainer()
+            entityPropContainer.innerHTML = ''
+        },
+        async submitEntity(url, csrftoken) {
+            this.entityFormLoading = true
+            this.getProperties()
+            this.entityData['properties'] = this.propertiesData
+            console.log(this.entityData)
+            const response = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(this.entityData),
+                headers: {
+                    "Content-type": "application/json",
+                    "X-CSRFToken": csrftoken
+                }
+            })
+            setTimeout(() => {
+                this.entityFormLoading = false
+                if (response.ok) {
+                    this.successToast = true
+                    setTimeout(() => {
+                        this.successToast = false
+                    }, 2000);
+                } else {
+                    this.errorToast = true
+                    setTimeout(() => {
+                        this.errorToast = false
+                    }, 2000);
+                }
+            }, 1000);
+            
+            this.resetEntityData()
+            this.clearPropContainer()
 
+        },
+        getProperties() {
+            const entityPropContainer = this.getPropContainer()
+            for (let i = 0; i < entityPropContainer.children.length; i++) {
+                const element = entityPropContainer.children[i];
+                const label = element.querySelector('label').innerText
+                const value = element.querySelector('input').value
+                this.propertiesData[label] = value
+            }
+        },
+        propertiesAdd() {
+            // "labelProp" "valueProp"
+            var removeButton = document.createElement('button');
+            removeButton.className = 'absolute right-0 top-0 shadow bg-gray-500- hover:bg-gray-700  focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded';
+            removeButton.innerHTML = '<span style="color: red;">X</span>';
+            const labelProp = this.formData['labelProp']
+            const valueProp = this.formData['valueProp']
+            const template = `<div class="md:flex md:items-center mb-6">
+            <div class="md:w-1/3">
+                <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="${valueProp}">
+                    ${labelProp}
+                </label>
+            </div>
+            <div class="relative md:w-2/3" id="parent-${labelProp}">
+                <input class="bg-gray-200 
+                appearance-none border-2 
+                border-gray-200 rounded 
+                w-full py-2 px-4 text-gray-700 
+                leading-tight focus:outline-none 
+                focus:bg-white focus:border-purple-500" id="${valueProp}" type="text" value=${valueProp} disabled>
+            </div>
+            </div>`
+            var tempDiv = document.createElement('div');
+            tempDiv.innerHTML = template;
+            tempDiv.querySelector(`#parent-${labelProp}`).appendChild(removeButton);
+            const entityPropContainer = this.getPropContainer()
+            entityPropContainer.appendChild(tempDiv)
+            removeButton.addEventListener('click', function () {
+                entityPropContainer.removeChild(tempDiv);
+            });
+            this.formData['labelProp'] = ''
+            this.formData['valueProp'] = ''
+            this.propertiesModalToggle()
+        },
         instrumentModalToggle(e) {
             this.instrumentModal = !this.instrumentModal
 
@@ -36,57 +138,8 @@ document.addEventListener("alpine:init", function () {
             this.propertiesModal = !this.propertiesModal
 
         },
-        propertiesAdd(formdata){
-            // "labelProp" "valueProp"
-            var removeButton = document.createElement('button');
-            removeButton.className = 'shadow bg-red-500 hover:bg-red-400 focus:shadow-outline focus:outline-none text-white font-bold py-2 px-4 rounded';
-            removeButton.innerHTML = '<span style="color: red;">X</span>';
-            removeButton.addEventListener('click', function() {
-                propertiesContainer.removeChild(label);
-                propertiesContainer.removeChild(input);
-                propertiesContainer.removeChild(removeButton);
-            });
 
-            const template = `<div class="md:flex md:items-center mb-6" id="parent-${formdata.labelProp}">
-            <div class="md:w-1/3">
-                <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="${formdata.valueProp}">
-                    ${formdata.labelProp}
-                </label>
-            </div>
-            <div class="md:w-2/3">
-                <input class="bg-gray-200 
-                appearance-none border-2 
-                border-gray-200 rounded 
-                w-full py-2 px-4 text-gray-700 
-                leading-tight focus:outline-none 
-                focus:bg-white focus:border-purple-500" id="${formdata.valueProp}" type="text" value=${formdata.valueProp} disabled>
-            </div>
-            </div>`
-            var tempDiv = document.createElement('div');
-            tempDiv.innerHTML = template;
-            tempDiv.querySelector(`#parent-${formdata.labelProp}`).appendChild(removeButton);
-           const entityPropContainer = document.getElementById('entity-prop-container')
-            entityPropContainer.appendChild(tempDiv)
-            this.propertiesModal = false
-           console.log(this.valueProp)
-           console.log(this.labelProp)
-        }
     }))
 })
-
-const addProperty = (e) => {
-    e.preventDefault()
-    `<div class="md:flex md:items-center mb-6">
-                <div class="md:w-1/3">
-                    <label class="block text-gray-500 font-bold md:text-right mb-1 md:mb-0 pr-4" for="name">
-                        nanana
-                    </label>
-                </div>
-                <div class="md:w-2/3">
-                    <input class="bg-gray-200 appearance-none border-2 border-gray-200 rounded w-full py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-purple-500" id="name" type="text" placeholder="Name">
-                </div>
-    </div>`
-    console.log(e)
-}
 
 

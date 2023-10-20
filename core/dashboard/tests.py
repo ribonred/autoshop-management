@@ -1,6 +1,8 @@
 import pytest
 from core.dashboard.serializers.entity import EntitySerializer
 from core.dashboard.serializers.instrument import InstumentSerializer
+from django.urls import reverse
+import json
 
 
 @pytest.mark.django_db
@@ -26,3 +28,20 @@ class TestDashboard:
         assert is_valid
         serializer.save()
         assert serializer.data == data
+
+    def test_api_entites(self, client, instrument_factory):
+        url = reverse("api-entities")
+        instrument = instrument_factory()
+        response = client.post(
+            url,
+            json.dumps(
+                {
+                    "instrument": instrument.name,
+                    "name": "name",
+                    "code": "code",
+                    "properties": {"dadang": "xxx", "bajul": "xxxx"},
+                }
+            ),
+            content_type="application/json",
+        )
+        assert response.status_code == 201

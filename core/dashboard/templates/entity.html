@@ -19,7 +19,8 @@
         placeholder="Search" 
         id="search-input" aria-label="Search" 
         aria-describedby="button-addon2" 
-        hx-get="{% url 'api-entities' %}" 
+        hx-get="{% url 'api-entities' %}"
+        hx-headers='{ "Accept": "text/html" }'
         hx-target="#instrument-menu" 
         hx-trigger="load delay:1s, keyup changed delay:500ms" />
 
