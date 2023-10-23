@@ -5,6 +5,9 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from django.db.models import Count
 from core.dashboard.serializers.entity import EntitySerializer
+from django.contrib.postgres.search import SearchVector
+from django.db.models import TextField
+from django.db.models.functions import Cast
 
 
 class EntityView(TemplateView):
@@ -17,16 +20,20 @@ class EntityApiView(APIView):
 
     def get(self, request, *args, **kwargs):
         saerch = request.GET.get("search", None)
+        attr = Cast("properties", TextField())
         entities = (
             Entity.objects.all()
             .only("code", "name", "properties")
-            .annotate(trx_count=Count("trxs"))
+            .annotate(
+                trx_count=Count("trxs"), search=SearchVector("name", "code", attr)
+            )
             .prefetch_related("trxs")
         )
         if saerch:
-            entities = entities.filter(name__icontains=saerch)
+            entities = entities.filter(search__icontains=saerch)
+        serializer = EntitySerializer(entities, many=True)
         return Response(
-            {"entities": entities},
+            {"entities": serializer.data},
         )
 
     def post(self, request, *args, **kwargs):

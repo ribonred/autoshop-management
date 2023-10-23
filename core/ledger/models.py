@@ -12,7 +12,9 @@ class Accounts(BaseTimeStampModel):
         INCOME = "INCOME", "Income"
         EXPENSE = "EXPENSE", "Expense"
 
-    user = models.ForeignKey("authentication.User", on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        "authentication.User", on_delete=models.CASCADE, related_name="accounts"
+    )
     account_name = models.CharField(max_length=255, verbose_name="Account Name")
     account_number = models.CharField(
         max_length=255, blank=True, null=True, verbose_name="Account Number"

@@ -16,6 +16,7 @@
         aria-label="Search"
         aria-describedby="button-addon2"
         hx-get="{% url 'api-instruments' %}"
+        hx-headers='{ "Accept": "text/html" }'
         hx-target="#instrument-menu"
         hx-trigger="load delay:1s, keyup changed delay:500ms"
         />

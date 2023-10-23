@@ -22,13 +22,13 @@ class Command(BaseCommand):
             account = AccountsFactory.create(user=user)
             instrument = InstrumentFactory.create()
             entity = EntityFactory.create(instrument=instrument)
-            trx_category = TrxCategoryFactory.create_batch(
-                6,
-                name=factory.Iterator(
-                    ["SELL", "BUY", "REPAIR", "MAINTENANCE", "FUEL", "OTHER"]
-                ),
-            )
-            # trx_category = TrxCategory.objects.all()
+            # trx_category = TrxCategoryFactory.create_batch(
+            #     6,
+            #     name=factory.Iterator(
+            #         ["SELL", "BUY", "REPAIR", "MAINTENANCE", "FUEL", "OTHER"]
+            #     ),
+            # )
+            trx_category = TrxCategory.objects.all()
             TransactionFactory.create_batch(
                 50,
                 account=account,

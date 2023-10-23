@@ -31,22 +31,57 @@ document.addEventListener("alpine:init", function () {
         successToast: false,
         errorToast: false,
         propertiesData: {},
-        resetEntityData(){
-        this.entityData = {
-            code: '',
-            name: '',
-            instrument: '',
-            properties: {}
-        }
+        resetEntityData() {
+            this.entityData = {
+                code: '',
+                name: '',
+                instrument: '',
+                properties: {}
+            }
+        },
+        entityResult: {
+            name: null,
+            id: null
+        },
+        transactionFormData: {
+            entity_name: '',
+            entity: '',
+            amount_display: '',
+            amount: '',
         },
         entityData: {
             code: '',
             name: '',
             instrument: null,
         },
+        instrumentData: {
+            name: ''
+        },
         formData: {
             labelProp: '',
             valueProp: ''
+        },
+        clearTransactionFormData() {
+            this.transactionFormData = {
+                entity_name: '',
+                entity: '',
+                amount_display: '',
+                amount: '',
+            }
+        },
+        formatRupiah(value) {
+            const formatter = new Intl.NumberFormat('id-ID', {
+                style: 'currency',
+                currency: 'IDR',
+                minimumFractionDigits: 2
+            });
+            const display = formatter.format(value)
+            this.transactionFormData.amount = value
+            if (value) {
+                this.transactionFormData.amount_display = display
+            } else {
+                this.transactionFormData.amount_display = ''
+            }
         },
         getPropContainer() {
             return document.getElementById('entity-prop-container')
@@ -55,11 +90,100 @@ document.addEventListener("alpine:init", function () {
             const entityPropContainer = this.getPropContainer()
             entityPropContainer.innerHTML = ''
         },
+        clearEntityResult() {
+            this.entityResult.name = null
+            this.entityResult.id = null
+        },
+        selectedEntity() {
+            this.transactionFormData.entity_name = this.entityResult.name
+            this.transactionFormData.entity = this.entityResult.id
+            this.clearEntityResult()
+        },
+        async submitTransaction(url, csrftoken) {
+            payload = {
+                entity: this.transactionFormData.entity,
+                amount: this.transactionFormData.amount,
+                trx_type: this.transactionFormData.trx_type,
+                trx_category: this.transactionFormData.trx_category,
+                trx_date: this.transactionFormData.trx_date,
+                description: this.transactionFormData.description,
+            }
+            const response = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(payload),
+                headers: {
+                    "Content-type": "application/json",
+                    "X-CSRFToken": csrftoken
+                }
+            })
+            if (response.ok) {
+                this.successToast = true
+                setTimeout(() => {
+                    this.successToast = false
+                }, 2000);
+            } else {
+                this.errorToast = true
+                setTimeout(() => {
+                    this.errorToast = false
+                }, 2000);
+            }
+            this.clearTransactionFormData()
+
+        },
+        async handleKey(e, url) {
+            if (e.target.value.length >= 2) {
+
+                const response = await fetch(`${url}?search=${e.target.value}`, {
+                    method: 'GET',
+                    headers: {
+                        "Accept": "application/json",
+                        "Content-type": "application/json",
+                    }
+                })
+                if (response.ok) {
+                    const data = await response.json()
+                    if (data.entities.length > 0) {
+                        entityData = data.entities[0]
+                        this.entityResult.name = entityData.name
+                        this.entityResult.id = entityData.id
+                    } else {
+                        this.clearEntityResult()
+                    }
+                }
+
+            } else {
+                this.clearEntityResult()
+            }
+        }, async submitInstrument(url, csrftoken) {
+            this.instrumentFormLoading = true
+            const response = await fetch(url, {
+                method: 'POST',
+                body: JSON.stringify(this.instrumentData),
+                headers: {
+                    "Content-type": "application/json",
+                    "X-CSRFToken": csrftoken
+                }
+            })
+            setTimeout(() => {
+                this.instrumentFormLoading = false
+                if (response.ok) {
+                    this.successToast = true
+                    setTimeout(() => {
+                        this.successToast = false
+                    }, 2000);
+                } else {
+                    this.errorToast = true
+                    setTimeout(() => {
+                        this.errorToast = false
+                    }, 2000);
+                }
+            }, 1000);
+            this.instrumentData.name = ''
+        },
         async submitEntity(url, csrftoken) {
             this.entityFormLoading = true
             this.getProperties()
             this.entityData['properties'] = this.propertiesData
-            console.log(this.entityData)
             const response = await fetch(url, {
                 method: 'POST',
                 body: JSON.stringify(this.entityData),
@@ -82,7 +206,7 @@ document.addEventListener("alpine:init", function () {
                     }, 2000);
                 }
             }, 1000);
-            
+
             this.resetEntityData()
             this.clearPropContainer()
 

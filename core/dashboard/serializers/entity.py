@@ -11,7 +11,10 @@ class EntitySerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Entity
-        fields = ("code", "name", "properties", "instrument")
+        fields = ("code", "name", "properties", "instrument", "id")
+        extra_kwargs = {
+            "id": {"read_only": True},
+        }
 
     def create(self, validated_data):
         return Entity.objects.create(**validated_data)

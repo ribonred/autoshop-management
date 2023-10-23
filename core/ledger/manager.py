@@ -15,3 +15,6 @@ class TransactionQueryManager(models.Manager):
             ),
             "trx_category",
         )
+
+    def transaction_user(self, user_id: int) -> models.QuerySet["Transaction"]:
+        return self.prefetched_queryset().filter(account__user_id=user_id)
