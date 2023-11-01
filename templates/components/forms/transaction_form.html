@@ -45,6 +45,7 @@ x-show="entityFormLoading">
                 placeholder="entity"
                 x-model="transactionFormData.entity_name"
                 @keyup="async (e) => handleKey(e, '{{entity_api_url}}')"
+                autocomplete="off"
                 >
                 <div id="dropdown" x-show="entityResult.name"  class="fixed z-10 bg-white divide-y divide-gray-100 rounded-lg shadow w-44 dark:bg-gray-700">
                   <ul class="py-2 text-sm text-gray-700 dark:text-gray-200" aria-labelledby="dropdownDefaultButton">
@@ -89,6 +90,7 @@ x-show="entityFormLoading">
               placeholder="Rp."
               x-model="transactionFormData.amount"
               x-effect="formatRupiah(transactionFormData.amount)"
+              autocomplete="off"
               >
               <p class="text-gray-500" x-text="transactionFormData.amount_display" 
               x-show="transactionFormData.amount_display"
@@ -155,6 +157,7 @@ x-show="entityFormLoading">
               name="trx_category" 
               type="select" 
               x-model="transactionFormData.trx_category"
+              autocomplete="off"
               >
               <option selected>Choose a category</option>
               {% for category in categories %}
@@ -190,6 +193,7 @@ x-show="entityFormLoading">
               name="trx_date" 
               type="date" 
               x-model="transactionFormData.trx_date"
+              autocomplete="off"
               >
           </div>
         </div>
@@ -220,6 +224,7 @@ x-show="entityFormLoading">
               x-model="transactionFormData.description"
               placeholder="put your description here"
               rows="5"
+              autocomplete="off"
               ></textarea>
           </div>
         </div>

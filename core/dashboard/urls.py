@@ -21,7 +21,17 @@ urlpatterns = [
         name="api-instruments",
     ),
     path("entities/", entity.EntityView.as_view(), name="entities"),
-    path("api/entities/", entity.EntityApiView.as_view(), name="api-entities"),
+    path("entities/<int:pk>/", entity.EntityDetailView.as_view(), name="entities-detail"),
+    path(
+        "api/entities/",
+        entity.EntityApiView.as_view({"get": "list", "post": "create"}),
+        name="api-entities",
+    ),
+    path(
+        "api/entities/<int:pk>/",
+        entity.EntityApiView.as_view({"get": "retrieve"}),
+        name="api-entity-detail",
+    ),
     path("forms/", forms.FormsViews.as_view(), name="forms-view"),
     path("forms/entity/", forms.EntityFormView.as_view(), name="entity-form"),
     path(

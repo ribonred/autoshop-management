@@ -53,6 +53,7 @@ document.addEventListener("alpine:init", function () {
             code: '',
             name: '',
             instrument: null,
+            properties: {}
         },
         instrumentData: {
             name: ''
@@ -263,7 +264,24 @@ document.addEventListener("alpine:init", function () {
 
         },
 
+        async getEntityDetail(url, csrf_token, pk) {
+            const urls = `${url}/${pk}/`
+            console.table(urls)
+            console.table(csrf_token)
+
+           const response = await fetch(`${url}/${pk}/`, {
+                method: 'GET',
+                headers: {
+                    "Accept": "application/json",
+                    "Content-type": "application/json",
+                    "X-CSRFToken": csrf_token
+                }
+            })
+            if (response.ok) {
+                const data = await response.json()
+                this.entityData = data
+            }
+        },
+
     }))
 })
-
-
