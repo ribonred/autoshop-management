@@ -1,13 +1,14 @@
 from typing import Any
 from django.views.generic import TemplateView
 from core.ledger.models import TrxCategory, Transaction
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class FormsViews(TemplateView):
+class FormsViews(LoginRequiredMixin, TemplateView):
     template_name = "forms.html"
 
 
-class EntityFormView(TemplateView):
+class EntityFormView(LoginRequiredMixin, TemplateView):
     template_name = "components/forms/entity_form.html"
 
     def get_context_data(self, **kwargs):
@@ -17,7 +18,7 @@ class EntityFormView(TemplateView):
         return context
 
 
-class TransactionFormView(TemplateView):
+class TransactionFormView(LoginRequiredMixin, TemplateView):
     template_name = "components/forms/transaction_form.html"
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:
@@ -33,5 +34,5 @@ class TransactionFormView(TemplateView):
         return context
 
 
-class InstrumentFormView(TemplateView):
+class InstrumentFormView(LoginRequiredMixin, TemplateView):
     template_name = "components/forms/instrument_form.html"

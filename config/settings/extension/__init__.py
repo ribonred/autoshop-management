@@ -52,7 +52,8 @@ class BaseEnv(BaseSettings):
     SECRET_KEY: str = (
         "django-insecure-!*f!8&^-h8oi0+)=r5rv0mifpem=@l18wr&3d!d06@be)@u53w"
     )
-    ALLOWED_HOSTS: list[str] = ["*"]
+    ALLOWED_HOSTS: list[str] = ["localhost", "127.0.0.1", "0.0.0.0", "pc.soberdev.net"]
+    CSRF_TRUSTED_ORIGINS: list[str] = ["https://pc.soberdev.net"]
     DATABASES: DatabaseSettings = DatabaseSettings.get_db_settings()
     STATIC_URL: str = "assets/"
     AUTH_USER_MODEL: str = "authentication.User"

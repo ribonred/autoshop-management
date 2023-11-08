@@ -6,9 +6,10 @@ from rest_framework.response import Response
 from rest_framework import status as api_status
 from django.db.models import Count
 from core.dashboard.serializers.instrument import InstumentSerializer
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class InstrumentView(TemplateView):
+class InstrumentView(LoginRequiredMixin, TemplateView):
     template_name = "instrument.html"
 
 

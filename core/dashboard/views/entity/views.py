@@ -9,13 +9,14 @@ from django.contrib.postgres.search import SearchVector
 from django.db.models import TextField
 from django.db.models.functions import Cast
 from rest_framework import mixins, viewsets
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
-class EntityView(TemplateView):
+class EntityView(LoginRequiredMixin, TemplateView):
     template_name = "entity.html"
 
 
-class EntityDetailView(TemplateView):
+class EntityDetailView(LoginRequiredMixin, TemplateView):
     template_name = "pages/entity_detail.html"
 
     def get_context_data(self, **kwargs: Any) -> dict[str, Any]:

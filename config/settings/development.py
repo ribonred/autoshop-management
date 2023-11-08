@@ -1,2 +1,1 @@
-from .base import *  # noqa
-
+from .base_remote import *  # noqa

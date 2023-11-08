@@ -6,6 +6,7 @@ from rest_framework.views import APIView
 from core.dashboard.serializers.transactions import TransactionsSerializer
 from rest_framework.response import Response
 from rest_framework import status
+from django.contrib.auth.mixins import LoginRequiredMixin
 
 
 class TransactionsApiView(APIView):
@@ -21,14 +22,16 @@ class TransactionsApiView(APIView):
         )
 
 
-class TransactionView(TemplateView):
+class TransactionView(LoginRequiredMixin, TemplateView):
     template_name = "transactions.html"
 
     def get_context_data(self, **kwargs):
         page_num: int = self.request.GET.get("page", 1)
         user: User = self.request.user
         context = super().get_context_data(**kwargs)
-        transactions = Transaction.query_manager.transaction_user(user.id).order_by("-trx_date")
+        transactions = Transaction.query_manager.transaction_user(user.id).order_by(
+            "-created"
+        )
         paginator = Paginator(transactions, 10)
         trx_obj = paginator.get_page(page_num)
         context["transactions"] = trx_obj
