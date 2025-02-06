@@ -15,7 +15,7 @@ class User(AbstractBaseUser, TimestampWithUid, PermissionsMixin):
     AUTH_FIELD_NAME = "email"
     REQUIRED_FIELDS = ["email"]
 
-    objects = UserManager()
+    objects:UserManager = UserManager()
 
     def __str__(self) -> str:
         return self.email

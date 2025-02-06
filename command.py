@@ -52,6 +52,12 @@ def task_migrate():
         "actions": [Interactive(command)],
     }
 
+def task_create_admin():
+    command = "python manage.py create_admin"
+    return {
+        "actions": [Interactive(command)],
+    }
+
 
 def task_prepare():
     """
@@ -64,5 +70,6 @@ def task_prepare():
             "migrations",
             "migrate",
             "collectstatic",
+            "create_admin"
         ],
     }

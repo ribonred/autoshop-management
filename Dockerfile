@@ -24,6 +24,6 @@ RUN mkdir -p logs
 RUN cp /app/proc/supervisor.conf /etc/supervisor/conf.d/supervisord.conf
 # RUN unlink /var/run/supervisor.sock
 RUN touch /var/run/supervisor.sock && chmod 777 /var/run/supervisor.sock
-
+RUN chmod +x ./script/entrypoint.sh
 # Expose port 8000
 EXPOSE 8000

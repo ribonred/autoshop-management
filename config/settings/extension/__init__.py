@@ -4,7 +4,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 class DbEngine(BaseSettings):
     """Manage Engine settings only"""
 
-    DBENGINE: str = "django.db.backends.sqlite3"
+    DBENGINE: str = "sqlite3"
     model_config: SettingsConfigDict = SettingsConfigDict(
         env_file=".env",
         env_file_encoding="utf-8",
@@ -14,7 +14,7 @@ class DbEngine(BaseSettings):
 
 class SQLiteSettings(DbEngine):
     """Manage sqlite settings only"""
-
+    ENGINE: str = "django.db.backends.sqlite3"
     NAME: str = "db.sqlite3"
 
 
