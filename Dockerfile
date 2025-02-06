@@ -1,28 +1,16 @@
 # Base image
-FROM python:3.11-slim-buster AS base
-ARG DEV
-# Install system packages
+FROM python:3.13-slim-bookworm AS base
 RUN apt-get update && \
     apt-get install -y --no-install-recommends \
     supervisor \
     && rm -rf /var/lib/apt/lists/*
-
+COPY --from=ghcr.io/astral-sh/uv:0.4.30 /uv /uvx /bin/
 # Build stage
 FROM base AS build
-
-# Install Poetry
-RUN pip install poetry==1.4.2
-ENV POETRY_HOME="/opt/poetry" \
-    POETRY_VIRTUALENVS_CREATE=true \
-    POETRY_VIRTUALENVS_IN_PROJECT=true \
-    POETRY_NO_INTERACTION=1
-ENV PATH="$PATH:$POETRY_HOME/bin"
-
 WORKDIR /app
-COPY pyproject.toml .
-RUN  poetry lock --no-update && poetry install --only main,prod,$DEV
-
-# Copy the rest of the application code
+RUN --mount=type=bind,source=uv.lock,target=uv.lock \
+    --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
+    uv sync --frozen --group remote --no-install-project
 COPY . .
 
 # Runtime stage
