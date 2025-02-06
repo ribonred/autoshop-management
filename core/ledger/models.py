@@ -1,6 +1,7 @@
 from django.db import models
 from helper.models import BaseTimeStampModel
 from django.utils import timezone
+from core.ledger.manager import TransactionQueryManager
 
 
 class Accounts(BaseTimeStampModel):
@@ -11,7 +12,9 @@ class Accounts(BaseTimeStampModel):
         INCOME = "INCOME", "Income"
         EXPENSE = "EXPENSE", "Expense"
 
-    user = models.ForeignKey("authentication.User", on_delete=models.CASCADE)
+    user = models.ForeignKey(
+        "authentication.User", on_delete=models.CASCADE, related_name="accounts"
+    )
     account_name = models.CharField(max_length=255, verbose_name="Account Name")
     account_number = models.CharField(
         max_length=255, blank=True, null=True, verbose_name="Account Number"
@@ -31,7 +34,7 @@ class Accounts(BaseTimeStampModel):
 class Instrument(BaseTimeStampModel):
     name = models.CharField(max_length=255, verbose_name="Instrument Name", unique=True)
     is_active = models.BooleanField(default=True, verbose_name="Is Active")
-    trxs: models.QuerySet["Transaction"]
+    entities: models.QuerySet["Entity"]
 
     def __str__(self):
         return self.name
@@ -71,7 +74,7 @@ class Transaction(BaseTimeStampModel):
         DEBIT = "DEBIT", "Debit"
         CREDIT = "CREDIT", "Credit"
 
-    amount = models.DecimalField(max_digits=10, decimal_places=2, verbose_name="Amount")
+    amount = models.DecimalField(max_digits=15, decimal_places=2, verbose_name="Amount")
     description = models.TextField(verbose_name="Description", default="no description")
     account = models.ForeignKey(
         Accounts,
@@ -97,6 +100,8 @@ class Transaction(BaseTimeStampModel):
         related_name="trxs",
     )
     trx_date = models.DateField(verbose_name="Transaction Date", default=timezone.now)
+    query_manager = TransactionQueryManager()
+    objects = models.Manager()
 
     def __str__(self):
         return self.description

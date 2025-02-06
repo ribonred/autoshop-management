@@ -1,0 +1,44 @@
+{% extends 'dashboard_base.html' %}
+{% block base %}
+    
+  <div 
+    class="relative mx-auto border border-transparent lg:w-1/2 rounded-lg shadow-md bg-gray-50" 
+    x-init="$nextTick(async () => { await getEntityDetail('/dashboard/api/entities' , '{{csrf_token}}' , '{{pk}}')})" 
+    x-data="AlpineData">
+
+    <h2 class="absolute top-5 left-5 font-bold text-lg" x-text="entityData.name"></h2>
+    
+    <div class="border border-separate border-emerald-600 mt-16">
+        <div class="bg-gray-700 mt-4 mb-4 grid-cols-3 grid">
+            <h3 class="text-white font-bold text-lg ml-4">INTSTRUMENT TYPE</h3>
+            <h3 class="text-white font-bold text-lg col-span-2" x-text="entityData.instrument"></h3>
+        </div>
+        <div class="bg-gray-700 mt-4 mb-4 grid-cols-3 grid">
+            <h3 class="text-white font-bold text-lg ml-4">CODE</h3>
+            <h3 class="text-white font-bold text-lg col-span-2" x-text="entityData.code"></h3>
+        </div>
+    </div>
+    <template x-cloak x-if="Object.keys(entityData.properties).length > 0">
+    <div class="py-5" x-show="Object.keys(entityData.properties).length > 0">
+        <details class="group">
+            <summary class="flex justify-between items-center font-medium cursor-pointer list-none">
+                <span>Properties</span>
+                <span class="transition group-open:rotate-180">
+            <svg fill="none" height="24" shape-rendering="geometricPrecision" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" viewBox="0 0 24 24" width="24"><path d="M6 9l6 6 6-6"></path>
+            </svg>
+          </span>
+            </summary>
+            <div class="border border-separate border-emerald-600">
+            <template x-for="[label, val] in Object.entries(entityData.properties)"> 
+                <div class="bg-gray-700 mt-4 mb-4 grid-cols-3 grid">
+                    <h3 class="text-white font-bold text-lg ml-4" x-text="label"></h3>
+                    <h3 class="text-white font-bold text-lg col-span-2" x-text="val"></h3>
+                </div>
+        </template>
+            </div>
+        </details>
+    </div>
+    </template>
+
+  </div>
+{% endblock %}

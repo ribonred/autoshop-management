@@ -7,7 +7,17 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}{% endblock %}</title>
-
+  <script src=   
+  "https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.js">   
+      </script>   
+      
+      <script src=   
+  "https://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/jquery-ui.js">   
+      </script>   
+      
+      <link href=   
+  "http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.16/themes/ui-lightness/jquery-ui.css"
+          rel="stylesheet" type="text/css" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@48,500,0,0"
     rel="stylesheet" />
@@ -15,9 +25,14 @@
   <link rel="stylesheet" 
       href="{% static 'src/output.css' %}"> 
   {% endcompress %}
+  <script
+  defer
+  src="https://unpkg.com/alpinejs-form-data@latest/dist/form-data.min.js"
+></script>
   <script src="{% static 'js/alpine.persist.js' %}" defer></script>
   <script src="{% static 'js/alpine.js' %}" defer></script>
   <script src="{% static 'js/htmx.js' %}"></script>
+  <script src="{% static 'js/main.js' %}"></script>
   
   {% block responsive %}
   <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
@@ -32,12 +47,14 @@
 <body>
   {% include 'components/section/dashboard_nav.html' %}
   {% include 'components/section/sidebar.html' %}
+  <div class="p-4 sm:ml-64  mt-14 ">
   {% block base %}
 
   {% endblock base %}
   {% block footer %}
-
+  
   {% endblock footer %}
+</div>
 
 </body>
 

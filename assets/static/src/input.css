@@ -1,3 +1,7 @@
-@tailwind base; 
-@tailwind components; 
+@tailwind base;
+@tailwind components;
 @tailwind utilities;
+
+.center-text {
+    @apply flex items-center justify-center text-center;
+}

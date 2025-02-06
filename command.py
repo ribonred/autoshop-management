@@ -1,5 +1,5 @@
 from doit.action import CmdAction
-from django.core.management import call_command
+from doit.tools import Interactive
 
 
 def task_server():
@@ -29,4 +29,40 @@ def task_runwatch():
     return {
         "actions": None,
         "task_dep": ["server", "tailwind"],
+    }
+
+
+def task_migrations():
+    command = "python manage.py makemigrations"
+    return {
+        "actions": [Interactive(command)],
+    }
+
+
+def task_collectstatic():
+    command = "python manage.py collectstatic --noinput"
+    return {
+        "actions": [command],
+    }
+
+
+def task_migrate():
+    command = "python manage.py migrate"
+    return {
+        "actions": [Interactive(command)],
+    }
+
+
+def task_prepare():
+    """
+    prepare
+    """
+
+    return {
+        "actions": [Interactive("echo preparation completed...")],
+        "task_dep": [
+            "migrations",
+            "migrate",
+            "collectstatic",
+        ],
     }

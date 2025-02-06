@@ -1,0 +1,14 @@
+{% extends 'dashboard_base.html' %}
+{% block title %}
+    Forms
+{% endblock title %}
+{% block base %}
+<div class="px-6 py-6 
+space-y-4 lg:px-8 md:w-full sm:w-full 
+flex flex-col justify-center items-center">
+    {% include 'components/menu/forms.html' with text="Instrument" icon=instrument_icon url=instrument_form_url %}
+    {% include 'components/menu/forms.html' with text="ENTITY" icon=entity_icon url=entity_form_url %}
+    {% include 'components/menu/forms.html' with text="Transaction" icon=transactions_icon url=transaction_form_url %}
+
+</div>
+{% endblock base %}

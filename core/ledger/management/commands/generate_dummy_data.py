@@ -7,6 +7,7 @@ from core.ledger.tests_tools.fixtures import (
     TransactionFactory,
 )
 from core.authentication.models import User
+from core.ledger.models import TrxCategory
 from django.db import transaction
 import factory
 
@@ -21,12 +22,13 @@ class Command(BaseCommand):
             account = AccountsFactory.create(user=user)
             instrument = InstrumentFactory.create()
             entity = EntityFactory.create(instrument=instrument)
-            trx_category = TrxCategoryFactory.create_batch(
-                6,
-                name=factory.Iterator(
-                    ["SELL", "BUY", "REPAIR", "MAINTENANCE", "FUEL", "OTHER"]
-                ),
-            )
+            # trx_category = TrxCategoryFactory.create_batch(
+            #     6,
+            #     name=factory.Iterator(
+            #         ["SELL", "BUY", "REPAIR", "MAINTENANCE", "FUEL", "OTHER"]
+            #     ),
+            # )
+            trx_category = TrxCategory.objects.all()
             TransactionFactory.create_batch(
                 50,
                 account=account,

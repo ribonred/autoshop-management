@@ -31,6 +31,7 @@ PACKAGE_APPS = [
     "simple_history",
     "debug_toolbar",
     "compressor",
+    "rest_framework",
 ]
 INSTALLED_APPS = DJANGO_DEFAULT_APPS + PACKAGE_APPS + DJANGO_PROJECT_APPS
 
@@ -133,6 +134,7 @@ TEMPLATES = [
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
                 "core.dashboard.context.logo.tailwind_logo",
+                "core.dashboard.context.urls.get_url_context",
             ],
         },
     },
@@ -166,7 +168,7 @@ LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "Asia/Jakarta"
 
-USE_TZ = True
+USE_TZ = False
 USE_I18N = True
 STATICFILES_DIRS = [
     BASE_DIR.parent / "assets/static",
