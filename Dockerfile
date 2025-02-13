@@ -19,6 +19,7 @@ WORKDIR /app
 COPY --from=build /app /app
 ENV PATH="/app/.venv/bin:$PATH"
 RUN echo "source /app/.venv/bin/activate" >> /etc/profile.d/venv.sh
+RUN [ -f aws-secret-wrapper ] && mv aws-secret-wrapper /usr/local/bin/  || echo "aws-secret-wrapper does not exist"
 RUN mkdir -p logs
 # Copy supervisord config file
 RUN cp /app/proc/supervisor.conf /etc/supervisor/conf.d/supervisord.conf
