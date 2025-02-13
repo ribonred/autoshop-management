@@ -22,12 +22,12 @@ jobs:
           registry: ghcr.io
           username: ${{ github.actor }}
           password: ${{ secrets.PAT_TOKEN }}
-          
+
       - name: Set up wrapper
         uses: ribonred/aws-secret-wrapper@v1.0.7
         with:
-          aws_access_key: ${{ env.ACCESS }}
-          aws_secret_key: ${{ env.ASK }}
+          aws_access_key: ${{ secrets.ACCESS }}
+          aws_secret_key: ${{ secrets.ASK }}
           aws_region: ap-southeast-3
 
       - name: Build and push Docker image
